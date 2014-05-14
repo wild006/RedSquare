@@ -3,7 +3,7 @@ class Modele():
         self.parent = parent
         self.grandeurJeuX = 450 #Selon la doc...
         self.grandeurJeuY = 450
-        #Mettre les options
+        #A FAIRE: Mettre les options
     
     def commencerPartie(self):
         self.p = Partie(self)
@@ -29,4 +29,11 @@ class Carre():
         self.x = self.x + x
         self.y = self.y + y
         
+class Pion():
+    def __init__(self,x,y, largeur, hauteur):
+        self.x1 = x #haut/gauche
+        self.y1 = y
+        self.x2 = x + largeur #bas/droite
+        self.y2 = y + hauteur
+        #self.couleur #Ajout possible...
     
