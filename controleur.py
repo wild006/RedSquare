@@ -4,6 +4,7 @@ from vue import *
 class Controleur():
     def __init__(self):
         self.m = Modele(self)
+        self.v =Vue(self)
         self.commencerPartie()
     
     def changementPosCarre(self, event, ancienX, ancienY):
@@ -13,6 +14,12 @@ class Controleur():
     
     def commencerPartie(self):
         self.m.commencerPartie()
+
+    def click(self,event):
+        self.m.click(event)
+
+    def mort(self):
+        self.v.afficherTemps(0.5)
         
 if __name__ == '__main__':
     c = Controleur()
