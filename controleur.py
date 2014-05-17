@@ -5,7 +5,11 @@ class Controleur():
     def __init__(self):
         self.m = Modele(self)
         self.v =Vue(self)
-        self.commencerPartie()
+        self.v.root.mainloop()
+        
+        
+    def afficherEtatJeu(self,carre,pions,bordures):
+        self.v.afficherEtatJeu(carre,pions,bordures)
     
     def changementPosCarre(self, event, ancienX, ancienY):
         deltaX = event.x - ancienX
@@ -14,7 +18,10 @@ class Controleur():
     
     def commencerPartie(self):
         self.m.commencerPartie()
-
+    
+    def jouer(self):
+        self.m.p.jouer()
+    
     def click(self,event):
         self.m.click(event)
 

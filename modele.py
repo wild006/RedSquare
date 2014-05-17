@@ -18,9 +18,16 @@ class Partie():
         print("Partie")
         self.parent = parent
         self.c = Carre()
+        self.pions = []
+        self.bordures = []
         
-    def Jouer(self):
-        pass
+        self.pions.append(Pion(100,100,60,60))
+        self.pions.append(Pion(300,85,60,50))
+        self.pions.append(Pion(85,350,30,60))
+        self.pions.append(Pion(355,340,100,20))
+        
+    def jouer(self):
+        self.parent.parent.afficherEtatJeu(self.c,self.pions,self.bordures)
         #after
         
 class Carre():
@@ -29,7 +36,7 @@ class Carre():
         self.y = 225
 
         self.couleur = "red"
-        self.dim = 30
+        self.dim = 40
     
     def changementPos(self,x,y):
         self.x = self.x + x
@@ -53,6 +60,8 @@ class Pion():
         self.x2 = x + largeur #bas/droite
         self.y2 = y + hauteur
         self.couleur ="blue"
+        
+    
 
 class Bordures():
     def __init__(self,x,y,largeur,hauteur):
