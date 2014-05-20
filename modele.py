@@ -28,7 +28,7 @@ class Partie():
         
     def jouer(self):
         self.parent.parent.afficherEtatJeu(self.c,self.pions,self.bordures)
-        #after
+        self.parent.parent.v.root.after(50,self.jouer)
         
 class Carre():
     def __init__(self):

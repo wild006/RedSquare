@@ -5,8 +5,12 @@ class Controleur():
     def __init__(self):
         self.m = Modele(self)
         self.v =Vue(self)
-        self.v.root.mainloop()
         
+        #A CHANGER DE PLACE.... POUR TEST SEULEMENT !
+        self.commencerPartie()
+        self.jouer()
+        
+        self.v.root.mainloop()
         
     def afficherEtatJeu(self,carre,pions,bordures):
         self.v.afficherEtatJeu(carre,pions,bordures)

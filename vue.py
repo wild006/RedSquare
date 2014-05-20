@@ -32,9 +32,7 @@ class Vue():
         self.curseurPosX = event.x
         self.curseurPosY = event.y
         print(event.x, " ", event.y)
-        #A CHANGER DE PLACE.... POUR TEST !
-        self.parent.commencerPartie()
-        self.parent.jouer()
+
         
     def dragged(self,event):
         self.parent.changementPosCarre(event,self.curseurPosX,self.curseurPosY)
