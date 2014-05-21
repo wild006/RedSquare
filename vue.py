@@ -1,13 +1,15 @@
 from tkinter import *
 import tkinter.messagebox as messagebox
+
 class Vue():
     def __init__(self,parent):
-        self.saveWindows(15)
         self.parent = parent
         self.root = Tk()
+        self.saveWindows(15)
         self.canevas = Canvas(self.root,width=self.parent.getGrandeurJeuX(),height=self.parent.getGrandeurJeuY(), bg = "white")
         self.canevas.pack()
         self.cliquer = False
+        self.permierClick = False
         self.bindMouse()
 
     def afficherEtatJeu(self,carre,pions,bordures):
@@ -39,6 +41,9 @@ class Vue():
                 self.curseurPosX = event.x
                 self.curseurPosY = event.y
                 self.cliquer = True
+                if not self.premierClick :
+                    self.premierClick = True
+                    self.controleur.jouer()
 
         
     def dragged(self,event):
@@ -52,8 +57,9 @@ class Vue():
         messagebox.showinfo("Score", "Votre temps est : " + temps.__str__() )
         
     def saveWindows(self,temps):
-        saveWindow = Toplevel()
+        saveWindow = Toplevel(self.root)
         label  = Label(saveWindow,text="Veillez entrer vos informations pour sauvegarder votre score")
         boutonSauvegarder = Button(saveWindow, text="Sauvegarder")
+
         
 
