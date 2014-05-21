@@ -25,6 +25,7 @@ class Controleur():
         self.m.commencerPartie()
     
     def jouer(self):
+        self.m.p.tempsDepart = time()
         self.m.p.jouer()
     
     def click(self,event):
@@ -32,6 +33,7 @@ class Controleur():
 
     def mort(self, temps):
         self.v.afficherTemps(temps)
+        exit(0)
         
     def getGrandeurJeuX(self):
         return self.m.grandeurJeuX
