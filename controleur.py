@@ -1,5 +1,6 @@
 from modele import *
 from vue import *
+from time import time
 
 class Controleur():
     def __init__(self):
@@ -8,8 +9,8 @@ class Controleur():
         
         #A CHANGER DE PLACE.... POUR TEST SEULEMENT !
         self.commencerPartie()
+        self.m.p.tempsDepart = time()
         self.jouer()
-        
         self.v.root.mainloop()
         
     def afficherEtatJeu(self,carre,pions,bordures):
@@ -29,11 +30,8 @@ class Controleur():
     def click(self,event):
         self.m.click(event)
 
-    def mort(self):
-        self.v.afficherTemps(0.5)
-
-    def finDeParite(self):
-        self.modele.arreterTimer()
+    def mort(self, temps):
+        self.v.afficherTemps(temps)
         
     def getGrandeurJeuX(self):
         return self.m.grandeurJeuX

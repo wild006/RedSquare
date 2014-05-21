@@ -1,3 +1,5 @@
+from time import time
+
 class Modele():
     def __init__(self, parent):
         self.parent = parent
@@ -15,9 +17,11 @@ class Partie():
     def __init__(self, parent):
         print("Partie")
         self.parent = parent
-        self.c = Carre()
+        self.c = Carre(self)
         self.pions = []
         self.bordures = []
+        self.finPartie = False
+        self.tempsDepart = 0
         
         vitesseDeBase = 4 #Pour avoir toute la meme vitesse au depart
         
@@ -36,13 +40,16 @@ class Partie():
         self.c.collisions(self.pions)
         self.c.collisions(self.bordures)
         self.parent.parent.afficherEtatJeu(self.c,self.pions,self.bordures)
+        if self.finPartie == True:
+            print("mort")
+            self.parent.parent.mort(time()-self.tempsDepart)
         self.parent.parent.v.root.after(50,self.jouer)
         
 class Carre():
-    def __init__(self):
+    def __init__(self, parent):
+        self.parent = parent
         self.x = 225 #Selon la doc... Depend de notre grandeur de jeu...
         self.y = 225
-
         self.couleur = "red"
         self.dim = 40
     
@@ -54,16 +61,13 @@ class Carre():
         
         for i in obstacle:
             if self.x > i.x1 and self.x <i.x2 and self.y > i.y1 and self.y < i.y2:
-                    print("mort")
-                    
+                    self.parent.finPartie = True
             elif self.x +self.dim > i.x1 and self.x + self.dim <i.x2 and self.y > i.y1 and self.y < i.y2:
-                    print("mort")
-                    
+                    self.parent.finPartie = True
             elif self.x > i.x1 and self.x <i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
-                    print("mort")
-                    
+                self.parent.finPartie = True
             elif self.x  + self.dim> i.x1 and self.x  + self.dim<i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
-                    print("mort")
+                self.parent.finPartie = True
         
 class Pion():
     def __init__(self,parent,x,y, largeur, hauteur, vitesseX, vitesseY):
