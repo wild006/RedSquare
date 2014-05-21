@@ -15,13 +15,13 @@ class Vue():
         self.canevas.delete("bordures")
         self.canevas.create_rectangle(carre.x,carre.y,carre.x+ carre.dim,carre.y + carre.dim,
                                       fill=carre.couleur,tags ="carre")
+        for i in bordures:
+            self.canevas.create_rectangle(i.x1,i.y1,i.x2,i.y2 ,
+                                          fill=i.couleur,tags ="bordures")
         for i in pions:
             self.canevas.create_rectangle(i.x1,i.y1,i.x2,i.y2 ,
                                       fill=i.couleur,tags ="pions")
-        for i in bordures:
-            self.canevas.create_rectangle(i.x1,i.y1,i.x1+ i.x2,i.y2 ,
-                                          fill=i.couleur,tags ="bordures")
-        
+
 
     def bindMouse(self):
         self.canevas.bind("<Button-1>", self.click)
@@ -41,5 +41,6 @@ class Vue():
 
 
     def afficherTemps(self,temps):
-        tkMessageBox.showinfo("Score", temps ,)
-    
+        self.parent.finDePartie()
+        messagebox.showinfo("Score", "Votre temps est : " + temps.__str__() )
+        
