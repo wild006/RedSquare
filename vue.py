@@ -4,7 +4,7 @@ class Vue():
     def __init__(self,parent):
         self.parent = parent
         self.root = Tk()
-        self.canevas = Canvas(self.root,width=450,height=450, bg = "white")
+        self.canevas = Canvas(self.root,width=self.parent.getGrandeurJeuX,height=self.parent.getGrandeurJeuY, bg = "white")
         self.canevas.pack()
         self.cliquer = False
         self.bindMouse()
@@ -44,3 +44,9 @@ class Vue():
         self.parent.finDePartie()
         messagebox.showinfo("Score", "Votre temps est : " + temps.__str__() )
         
+    def saveWindows(self,temps):
+        saveWindow = TopLevel()
+        label  = Label(saveWindow,text="Veillez entrer vos informations pour sauvegarder votre score")
+        boutonSauvegarder = Button(saveWindow, "Sauvegarder")
+        
+
