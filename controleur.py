@@ -31,6 +31,9 @@ class Controleur():
 
     def mort(self):
         self.v.afficherTemps(0.5)
+
+    def finDeParite(self):
+        self.modele.arreterTimer()
         
 if __name__ == '__main__':
     c = Controleur()
