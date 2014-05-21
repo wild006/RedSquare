@@ -1,8 +1,9 @@
 class Modele():
     def __init__(self, parent):
         self.parent = parent
-        self.grandeurJeuX = 450 #Selon la doc...
-        self.grandeurJeuY = 450
+        self.grandeurJeuX = 460 #Selon la doc...
+        self.grandeurJeuY = 460
+        self.largeurBordure = 60
         #A FAIRE: Mettre les options
     
     def commencerPartie(self):
@@ -24,11 +25,16 @@ class Partie():
         self.pions.append(Pion(self,300,85,60,50, -vitesseDeBase, vitesseDeBase))
         self.pions.append(Pion(self,85,350,30,60, vitesseDeBase, -vitesseDeBase))
         self.pions.append(Pion(self,355,340,100,20, -vitesseDeBase, -vitesseDeBase))
+        self.bordures.append(Bordure(0,0,self.parent.grandeurJeuX,self.parent.largeurBordure))#haut
+        self.bordures.append(Bordure(0,self.parent.largeurBordure,self.parent.largeurBordure,self.parent.grandeurJeuY - (2*self.parent.largeurBordure)))#gauche
+        self.bordures.append(Bordure(0,self.parent.grandeurJeuY-self.parent.largeurBordure,self.parent.grandeurJeuX, self.parent.largeurBordure))#bas
+        self.bordures.append(Bordure(self.parent.grandeurJeuX-self.parent.largeurBordure,self.parent.largeurBordure,self.parent.largeurBordure,self.parent.grandeurJeuY - (2*self.parent.largeurBordure)))#droite
         
     def jouer(self):
         for pion in self.pions:
             pion.changementPos()
-        self.c.collisions(self.pions,self.bordures)
+        self.c.collisions(self.pions)
+        self.c.collisions(self.bordures)
         self.parent.parent.afficherEtatJeu(self.c,self.pions,self.bordures)
         self.parent.parent.v.root.after(50,self.jouer)
         
@@ -44,22 +50,9 @@ class Carre():
         self.x = self.x + x
         self.y = self.y + y
 
-    def collisions(self,pions,bordures):
+    def collisions(self,obstacle):
         
-        for i in pions:
-            if self.x > i.x1 and self.x <i.x2 and self.y > i.y1 and self.y < i.y2:
-                    print("mort")
-                    
-            elif self.x +self.dim > i.x1 and self.x + self.dim <i.x2 and self.y > i.y1 and self.y < i.y2:
-                    print("mort")
-                    
-            elif self.x > i.x1 and self.x <i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
-                    print("mort")
-                    
-            elif self.x  + self.dim> i.x1 and self.x  + self.dim<i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
-                    print("mort")
-                    
-        for i in bordures:
+        for i in obstacle:
             if self.x > i.x1 and self.x <i.x2 and self.y > i.y1 and self.y < i.y2:
                     print("mort")
                     
@@ -97,11 +90,11 @@ class Pion():
         if self.y2 >= self.parent.parent.grandeurJeuY and self.vitesseY > 0:
             self.vitesseY = self.vitesseY * -1
             
-class Bordures():
+class Bordure():
     def __init__(self,x,y,largeur,hauteur):
         self.x1 =x 
         self.y1 = y
         self.x2 = x + largeur 
         self.y2= y +hauteur
-        self.couleur ="gray"
+        self.couleur ="black"
     

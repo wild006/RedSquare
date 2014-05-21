@@ -35,5 +35,11 @@ class Controleur():
     def finDeParite(self):
         self.modele.arreterTimer()
         
+    def getGrandeurJeuX(self):
+        return self.m.grandeurJeuX
+    
+    def getGrandeurJeuY(self):
+        return self.m.grandeurJeuY
+           
 if __name__ == '__main__':
     c = Controleur()
