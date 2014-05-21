@@ -57,9 +57,16 @@ class Vue():
         messagebox.showinfo("Score", "Votre temps est : " + temps.__str__() )
         
     def saveWindows(self,temps):
-        saveWindow = Toplevel(self.root)
-        label  = Label(saveWindow,text="Veillez entrer vos informations pour sauvegarder votre score")
-        boutonSauvegarder = Button(saveWindow, text="Sauvegarder")
+        self.saveWindow = Toplevel(self.root)
+        label  = Label(self.saveWindow,text= "Veillez entrer vos informations pour sauvegarder votre score" )
+        boutonSauvegarder = Button(self.saveWindow, text = "Sauvegarder", command = self.fermerSave )
+        label.pack()
+        texte = Text(self.saveWindow,width =25,height=1)
+        texte.pack()
+        boutonSauvegarder.pack()
+        
+    def fermerSave(self):
+        self.saveWindow.destroy()
 
         
 
