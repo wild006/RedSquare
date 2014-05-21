@@ -1,4 +1,5 @@
 from time import time
+import math
 
 class Modele():
     def __init__(self, parent):
@@ -10,8 +11,8 @@ class Modele():
     
     def commencerPartie(self):
         self.p = Partie(self)
+        self.parent.afficherEtatJeu(self.p.c,self.p.pions,self.p.bordures)#Afficher le jeu des le depart
         #Initialiser le carre
-        
     
 class Partie():
     def __init__(self, parent):
@@ -22,6 +23,9 @@ class Partie():
         self.bordures = []
         self.finPartie = False
         self.tempsDepart = 0
+        self.nbChangementVitesse = 0
+        self.incrVit = 1
+        self.nbSecIncrVit = 8
         
         vitesseDeBase = 4 #Pour avoir toute la meme vitesse au depart
         
@@ -43,6 +47,16 @@ class Partie():
         if self.finPartie == True:
             print("mort")
             self.parent.parent.mort(time()-self.tempsDepart)
+        else:
+            if math.floor((time()-self.tempsDepart)/self.nbSecIncrVit) > self.nbChangementVitesse:
+                print("CHANGEMENT vitesse", math.floor((time()-self.tempsDepart)/self.nbSecIncrVit))
+                for pion in self.pions:
+                    print("vitesse avant" , pion.vitesseX, " ", pion.vitesseY)
+                    pion.changementVitesse(self.incrVit)
+                    print("vitesse apres" , pion.vitesseX, " ", pion.vitesseY)
+                self.nbChangementVitesse = self.nbChangementVitesse + 1
+                print(self.nbChangementVitesse)
+                
         self.parent.parent.v.root.after(50,self.jouer)
         
 class Carre():
@@ -93,6 +107,16 @@ class Pion():
             self.vitesseY = self.vitesseY * -1
         if self.y2 >= self.parent.parent.grandeurJeuY and self.vitesseY > 0:
             self.vitesseY = self.vitesseY * -1
+            
+    def changementVitesse(self, incrVit):
+        if self.vitesseX < 0:
+            self.vitesseX = self.vitesseX - incrVit
+        else:
+            self.vitesseX = self.vitesseX + incrVit
+        if self.vitesseY < 0:
+            self.vitesseY = self.vitesseY - incrVit
+        else:
+            self.vitesseY = self.vitesseY + incrVit        
             
 class Bordure():
     def __init__(self,x,y,largeur,hauteur):
