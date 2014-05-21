@@ -5,11 +5,11 @@ class Vue():
     def __init__(self,parent):
         self.parent = parent
         self.root = Tk()
-        self.saveWindows(15)
+        #self.saveWindows(15)
         self.canevas = Canvas(self.root,width=self.parent.getGrandeurJeuX(),height=self.parent.getGrandeurJeuY(), bg = "white")
         self.canevas.pack()
         self.cliquer = False
-        self.permierClick = False
+        self.premierClick = False
         self.bindMouse()
 
     def afficherEtatJeu(self,carre,pions,bordures):
@@ -43,7 +43,7 @@ class Vue():
                 self.cliquer = True
                 if not self.premierClick :
                     self.premierClick = True
-                    self.controleur.jouer()
+                    self.parent.jouer()
 
         
     def dragged(self,event):
@@ -54,6 +54,7 @@ class Vue():
 
 
     def afficherTemps(self,temps):
+        self.premierClick = False
         messagebox.showinfo("Score", "Votre temps est : " + temps.__str__() )
         
     def saveWindows(self,temps):

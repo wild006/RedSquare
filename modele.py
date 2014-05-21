@@ -24,10 +24,10 @@ class Partie():
         self.finPartie = False
         self.tempsDepart = 0
         self.nbChangementVitesse = 0
-        self.incrVit = 1
+        self.incrVit = 2
         self.nbSecIncrVit = 8
         
-        vitesseDeBase = 4 #Pour avoir toute la meme vitesse au depart
+        vitesseDeBase = 3 #Pour avoir toute la meme vitesse au depart
         
         self.pions.append(Pion(self,100,100,60,60, vitesseDeBase, vitesseDeBase))
         self.pions.append(Pion(self,300,85,60,50, -vitesseDeBase, vitesseDeBase))
@@ -56,8 +56,7 @@ class Partie():
                     print("vitesse apres" , pion.vitesseX, " ", pion.vitesseY)
                 self.nbChangementVitesse = self.nbChangementVitesse + 1
                 print(self.nbChangementVitesse)
-                
-        self.parent.parent.v.root.after(50,self.jouer)
+            self.parent.parent.v.root.after(50,self.jouer)
         
 class Carre():
     def __init__(self, parent):

@@ -9,8 +9,7 @@ class Controleur():
         
         #A CHANGER DE PLACE.... POUR TEST SEULEMENT !
         self.commencerPartie()
-        self.m.p.tempsDepart = time()
-        self.jouer()
+        
         self.v.root.mainloop()
         
     def afficherEtatJeu(self,carre,pions,bordures):
@@ -33,7 +32,8 @@ class Controleur():
 
     def mort(self, temps):
         self.v.afficherTemps(temps)
-        exit(0)
+        self.v.saveWindows(temps)
+        self.commencerPartie()
         
     def getGrandeurJeuX(self):
         return self.m.grandeurJeuX
