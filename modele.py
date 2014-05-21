@@ -9,9 +9,6 @@ class Modele():
         self.p = Partie(self)
         #Initialiser le carre
         
-    def click(self,event):
-        pass
-        
     
 class Partie():
     def __init__(self, parent):
@@ -31,6 +28,7 @@ class Partie():
     def jouer(self):
         for pion in self.pions:
             pion.changementPos()
+        self.c.collisions(self.pions,self.bordures)
         self.parent.parent.afficherEtatJeu(self.c,self.pions,self.bordures)
         self.parent.parent.v.root.after(50,self.jouer)
         
@@ -47,15 +45,32 @@ class Carre():
         self.y = self.y + y
 
     def collisions(self,pions,bordures):
+        
         for i in pions:
-            if self.x >= i.x2 and self.y >= i.x2:
-                if self.x +self.dim <= i.x1 and self.y +self.dim <= i.y1:
-                    exit(0)
+            if self.x > i.x1 and self.x <i.x2 and self.y > i.y1 and self.y < i.y2:
+                    print("mort")
+                    
+            elif self.x +self.dim > i.x1 and self.x + self.dim <i.x2 and self.y > i.y1 and self.y < i.y2:
+                    print("mort")
+                    
+            elif self.x > i.x1 and self.x <i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
+                    print("mort")
+                    
+            elif self.x  + self.dim> i.x1 and self.x  + self.dim<i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
+                    print("mort")
                     
         for i in bordures:
-            if self.x >= i.x2 and self.y >= i.x2:
-                if self.x +self.dim <= i.x1 and self.y +self.dim <= i.y1:
-                    exit(0)
+            if self.x > i.x1 and self.x <i.x2 and self.y > i.y1 and self.y < i.y2:
+                    print("mort")
+                    
+            elif self.x +self.dim > i.x1 and self.x + self.dim <i.x2 and self.y > i.y1 and self.y < i.y2:
+                    print("mort")
+                    
+            elif self.x > i.x1 and self.x <i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
+                    print("mort")
+                    
+            elif self.x  + self.dim> i.x1 and self.x  + self.dim<i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
+                    print("mort")
         
 class Pion():
     def __init__(self,parent,x,y, largeur, hauteur, vitesseX, vitesseY):
