@@ -3,14 +3,19 @@ import tkinter.messagebox as messagebox
 
 class Vue():
     def __init__(self,parent):
+
         self.parent = parent
         self.root = Tk()
-        #self.saveWindows(15)
         self.canevas = Canvas(self.root,width=self.parent.getGrandeurJeuX(),height=self.parent.getGrandeurJeuY(), bg = "white")
         self.canevas.pack()
         self.cliquer = False
         self.premierClick = False
-        self.bindMouse()
+        self.bgImage= PhotoImage(file="Menu.gif")
+        self.boutonJouer = Button(text= "Jouer",width =9,command = self.commencerPartie)
+        self.boutonOptions = Button(text= "Options",width =9)
+        self.boutonHighscores = Button(text= "HighScore",width =9)
+        self.boutonQuitter = Button(text= "Quitter",width =9)
+        self.Menu()
 
     def afficherEtatJeu(self,carre,pions,bordures):
         self.canevas.delete("carre")
@@ -70,5 +75,17 @@ class Vue():
         self.parent.sauvegarderHighscore(self.texte.get())
         self.saveWindow.destroy()
 
+    
+    def commencerPartie(self):
+        self.canevas.delete("Menu")
+        self.bindMouse()
+        self.parent.commencerPartie()
+        
+    def Menu(self):
+        self.canevas.create_image(0,0,image=self.bgImage,anchor=NW ,tags="Menu" )
+        self.canevas.create_window(250,150,window = self.boutonJouer,tags="Menu")
+        self.canevas.create_window(250,200,window = self.boutonHighscores,tags="Menu")
+        self.canevas.create_window(250,250,window = self.boutonOptions,tags="Menu")
+        self.canevas.create_window(250,300,window = self.boutonQuitter,tags="Menu")
         
 

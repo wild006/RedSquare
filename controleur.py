@@ -6,9 +6,7 @@ class Controleur():
     def __init__(self):
         self.m = Modele(self)
         self.v =Vue(self)
-        
-        #A CHANGER DE PLACE.... POUR TEST SEULEMENT !
-        self.commencerPartie()
+
         
         self.v.root.mainloop()
         
