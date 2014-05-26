@@ -55,18 +55,19 @@ class Vue():
 
     def afficherTemps(self,temps):
         self.premierClick = False
-        messagebox.showinfo("Score", "Votre temps est : " + temps.__str__() )
+        messagebox.showinfo("Score", "Votre temps est  " + "%.3f" % round(temps,3) + " secondes !" )
         
-    def saveWindows(self,temps):
+    def saveWindows(self):
         self.saveWindow = Toplevel(self.root)
         label  = Label(self.saveWindow,text= "Veillez entrer vos informations pour sauvegarder votre score" )
         boutonSauvegarder = Button(self.saveWindow, text = "Sauvegarder", command = self.fermerSave )
         label.pack()
-        texte = Text(self.saveWindow,width =25,height=1)
-        texte.pack()
+        self.texte = Entry(self.saveWindow, width =25)
+        self.texte.pack()
         boutonSauvegarder.pack()
         
     def fermerSave(self):
+        self.parent.sauvegarderHighscore(self.texte.get())
         self.saveWindow.destroy()
 
         

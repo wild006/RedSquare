@@ -32,7 +32,7 @@ class Controleur():
 
     def mort(self, temps):
         self.v.afficherTemps(temps)
-        self.v.saveWindows(temps)
+        self.v.saveWindows()
         self.commencerPartie()
         
     def getGrandeurJeuX(self):
@@ -40,6 +40,10 @@ class Controleur():
     
     def getGrandeurJeuY(self):
         return self.m.grandeurJeuY
+    
+    def sauvegarderHighscore(self, score):
+        self.m.p.sauvegarderHighscore(score)
+        
            
 if __name__ == '__main__':
     c = Controleur()
