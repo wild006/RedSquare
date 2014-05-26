@@ -12,10 +12,13 @@ class Vue():
         self.premierClick = False
         self.bgImage= PhotoImage(file="Menu.gif")
         self.boutonJouer = Button(text= "Jouer",width =9,command = self.commencerPartie)
-        self.boutonOptions = Button(text= "Options",width =9)
-        self.boutonHighscores = Button(text= "HighScore",width =9)
-        self.boutonQuitter = Button(text= "Quitter",width =9)
+        self.boutonOptions = Button(text= "Options",width =9,command = self.afficherOptions)
+        self.boutonHighscores = Button(text= "HighScore",width =9, command = self.afficherHighscores)
+        self.boutonCredits = Button(text= "Crédits",width =9, command = self.afficherCredits)
+        self.boutonQuitter = Button(text= "Quitter",width =9, command = self.Quitter)
+        self.boutonRetour = Button(text= "Retour au Menu",width =12, command = self.Menu)
         self.Menu()
+
 
     def afficherEtatJeu(self,carre,pions,bordures):
         self.canevas.delete("carre")
@@ -35,6 +38,11 @@ class Vue():
         self.canevas.bind("<Button-1>", self.click)
         self.canevas.bind("<B1-Motion>", self.dragged)
         self.canevas.bind("<ButtonRelease-1>", self.clickRelease)
+        
+    def unbindMouse(self):
+        self.canevas.unbind("<Button-1>")
+        self.canevas.unbind("<B1-Motion>")
+        self.canevas.unbind("<ButtonRelease-1>")
 
     def clickRelease(self,event):
         self.cliquer = False
@@ -64,28 +72,58 @@ class Vue():
         
     def saveWindows(self):
         self.saveWindow = Toplevel(self.root)
-        label  = Label(self.saveWindow,text= "Veillez entrer vos informations pour sauvegarder votre score" )
-        boutonSauvegarder = Button(self.saveWindow, text = "Sauvegarder", command = self.fermerSave )
-        label.pack()
+        self.labelSauvegarde  = Label(self.saveWindow,text= "Veillez entrer vos informations pour sauvegarder votre score" )
+        boutonSauvegarder = Button(self.saveWindow, text = "Sauvegarder", command = self.sauvegarder, width =17)
+        boutonSauveQuitter = Button(self.saveWindow, text = "Sauvegarder et Menu", command = self.sauvegarderQuitter,width =17 )
+        self.labelSauvegarde.pack()
         self.texte = Entry(self.saveWindow, width =25)
         self.texte.pack()
         boutonSauvegarder.pack()
+        boutonSauveQuitter.pack()
+
+    def sauvegarderQuitter(self):
+        self.sauvegarder()
+        self.unbindMouse()
+        self.Menu()
         
-    def fermerSave(self):
-        self.parent.sauvegarderHighscore(self.texte.get())
+        
+    def sauvegarder(self):
+        self.parent.sauvegarderHighscore(self.texte.cget("text"))
         self.saveWindow.destroy()
 
     
     def commencerPartie(self):
-        self.canevas.delete("Menu")
+        self.canevas.delete("menu")
+        self.canevas.delete("bg")
         self.bindMouse()
         self.parent.commencerPartie()
+
+    def afficherOptions(self):
+        self.canevas.delete("menu")
+        self.canevas.create_window(230,400,window= self.boutonRetour,tags="options")
+
+    def afficherHighscores(self):
+        self.canevas.delete("menu")
+        self.canevas.create_window(230,400,window= self.boutonRetour,tags="HS")
+
+    def afficherCredits(self):
+        self.canevas.delete("menu")
+        labelNomAlex = Label(text = "Alexandre Lplante-Turpin")
+        labelNomFrancois = Label(text  = "François Genest")
+        self.canevas.create_window(230,100,window=labelNomFrancois,tags="credits")
+        self.canevas.create_window(230,125,window=labelNomAlex,tags="credits")
+        self.canevas.create_window(230,400,window= self.boutonRetour,tags="credits")
+        
+    def Quitter(self):
+        exit(0)
         
     def Menu(self):
-        self.canevas.create_image(0,0,image=self.bgImage,anchor=NW ,tags="Menu" )
-        self.canevas.create_window(250,150,window = self.boutonJouer,tags="Menu")
-        self.canevas.create_window(250,200,window = self.boutonHighscores,tags="Menu")
-        self.canevas.create_window(250,250,window = self.boutonOptions,tags="Menu")
-        self.canevas.create_window(250,300,window = self.boutonQuitter,tags="Menu")
+        self.canevas.delete("all")
+        self.canevas.create_image(0,0,image=self.bgImage,anchor=NW ,tags="bg" )
+        self.canevas.create_window(230,125,window = self.boutonJouer,tags="menu")
+        self.canevas.create_window(230,175,window = self.boutonHighscores,tags="menu")
+        self.canevas.create_window(230,225,window = self.boutonOptions,tags="menu")
+        self.canevas.create_window(230,275,window = self.boutonCredits,tags="menu")
+        self.canevas.create_window(230,325,window = self.boutonQuitter,tags="menu")
         
 
