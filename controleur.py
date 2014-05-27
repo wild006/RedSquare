@@ -31,7 +31,6 @@ class Controleur():
     def mort(self, temps):
         self.v.afficherTemps(temps)
         self.v.saveWindows()
-        self.commencerPartie()
         
     def getGrandeurJeuX(self):
         return self.m.grandeurJeuX

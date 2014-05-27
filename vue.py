@@ -73,8 +73,8 @@ class Vue():
     def saveWindows(self):
         self.saveWindow = Toplevel(self.root)
         self.labelSauvegarde  = Label(self.saveWindow,text= "Veillez entrer vos informations pour sauvegarder votre score" )
-        boutonSauvegarder = Button(self.saveWindow, text = "Sauvegarder", command = self.sauvegarder, width =17)
-        boutonSauveQuitter = Button(self.saveWindow, text = "Sauvegarder et Menu", command = self.sauvegarderQuitter,width =17 )
+        boutonSauvegarder = Button(self.saveWindow, text = "Sauvegarder et rejouer", command = self.sauvegarder, width =30)
+        boutonSauveQuitter = Button(self.saveWindow, text = "Sauvegarder et revenir au menu", command = self.sauvegarderQuitter,width =30 )
         self.labelSauvegarde.pack()
         self.texte = Entry(self.saveWindow, width =25)
         self.texte.pack()
@@ -88,9 +88,9 @@ class Vue():
         
         
     def sauvegarder(self):
-        self.parent.sauvegarderHighscore(self.texte.cget("text"))
+        self.parent.sauvegarderHighscore(self.texte.get())
         self.saveWindow.destroy()
-
+        self.parent.commencerPartie()
     
     def commencerPartie(self):
         self.canevas.delete("menu")

@@ -10,12 +10,33 @@ class Modele():
         self.highscore = []
         self.scoresSession = []
         self.limiteHighscore = 3
+        self.lireHighscore()
         #A FAIRE: Mettre les options
     
     def commencerPartie(self):
         self.p = Partie(self)
         self.parent.afficherEtatJeu(self.p.c,self.p.pions,self.p.bordures)#Afficher le jeu des le depart
         #Initialiser le carre
+        
+    def ecrireHighscore(self):
+        fichierHighscore = open("score.txt", 'w')
+        for i in self.highscore:
+            fichierHighscore.write((str(i[0]) + ","+ str(i[1])+ "\n"))
+        fichierHighscore.close()
+        
+    def lireHighscore(self):
+        try:
+            fichierHighscore = open("score.txt", 'r')
+            self.highscore = [] #Pour etre sur d'avoir seulement les socres du fichier
+            
+            for line in fichierHighscore:
+                self.highscore.append(line.split(','))
+            for score in self.highscore:
+                score[1] = float(score[1])
+                
+            fichierHighscore.close()
+        except:
+            pass #Le fichier n'est pas cree
     
 class Partie():
     def __init__(self, parent):
@@ -85,6 +106,9 @@ class Partie():
             print(i)
         for i in self.parent.highscore:
             print(i)
+        
+        self.parent.ecrireHighscore()
+
         
 class Carre():
     def __init__(self, parent):
