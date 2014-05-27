@@ -22,10 +22,11 @@ class Modele():
         self.limiteHighscore = 3
         self.lireHighscore()
         self.dernierNiveau = Niveau.classique
+        self.isPowerUp = True
         #A FAIRE: Mettre les options
-    
+        
     def commencerPartie(self, niveau):
-        self.p = Partie(self, niveau)
+        self.p = Partie(self, niveau, self.isPowerUp)
         self.parent.afficherEtatJeu(self.p.c,self.p.pions,self.p.bordures, self.p.powersUP)#Afficher le jeu des le depart
         #Initialiser le carre
         
@@ -50,7 +51,7 @@ class Modele():
             pass #Le fichier n'est pas cree
     
 class Partie():
-    def __init__(self, parent, niveau):
+    def __init__(self, parent, niveau, isPowerUp):
         print("Partie")
         self.parent = parent
         self.c = Carre(self)
@@ -65,9 +66,8 @@ class Partie():
         self.nbChangementVitesse = 0
         self.incrVit = 2
         self.nbSecIncrVit = 8
-        self.probPowerUp = 0.08
-        self.isPowerUp = True
-        
+        self.probPowerUp = 0.015
+        self.isPowerUp = isPowerUp
         #Pour avoir toute la meme vitesse au depart
         if niveau == Niveau.facile:
             self.incrVit = 1
@@ -100,6 +100,7 @@ class Partie():
         if self.isPowerUp:
             for powerUp in self.powersUP:
                 powerUp.changementPos()
+                powerUp.tempsFini()
             self.apparitionPowerUp()
             
         self.c.collisions()
@@ -160,20 +161,30 @@ class Carre():
         self.y = self.y + y
 
     def collisionObstacle(self,obstacle):        
-        for i in obstacle:
-            if self.x > i.x1 and self.x <i.x2 and self.y > i.y1 and self.y < i.y2:
-                    self.parent.finPartie = True
-            elif self.x +self.dim > i.x1 and self.x + self.dim <i.x2 and self.y > i.y1 and self.y < i.y2:
-                    self.parent.finPartie = True
-            elif self.x > i.x1 and self.x <i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
-                self.parent.finPartie = True
-            elif self.x  + self.dim> i.x1 and self.x  + self.dim<i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
-                self.parent.finPartie = True
+        tue = self.collision(obstacle)
+        if tue != None:
+            self.parent.finPartie = True
     
-   # def collisionPowerUp(self, powerUp):
-        
-   # def collision(self, element):
-        
+    def collisionPowerUp(self, powersUp):
+        powerUp = self.collision(powersUp)
+        if powerUp != None:
+            if powerUp.type == TypePowerUp.petit:
+                self.dim = self.dim * 0.8
+            elif powerUp.type == TypePowerUp.grand:
+                self.dim = self.dim * 1.2
+            self.parent.powersUP.remove(powerUp)
+            
+    def collision(self, element):
+        for i in element:
+            if self.x > i.x1 and self.x <i.x2 and self.y > i.y1 and self.y < i.y2:
+                return i
+            elif self.x +self.dim > i.x1 and self.x + self.dim <i.x2 and self.y > i.y1 and self.y < i.y2:
+                return i
+            elif self.x > i.x1 and self.x <i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
+                return i
+            elif self.x  + self.dim> i.x1 and self.x  + self.dim<i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
+                return i
+        return None
         
     def collisions(self):
         if self.x < 0 or self.x > self.parent.parent.grandeurJeuX:
@@ -183,6 +194,8 @@ class Carre():
         else:
             self.collisionObstacle(self.parent.pions)
             self.collisionObstacle(self.parent.bordures)
+        if self.parent.isPowerUp:
+            self.collisionPowerUp(self.parent.powersUP)
         
 class Pion():
     def __init__(self,parent,x,y, largeur, hauteur, vitesseX, vitesseY):
@@ -231,16 +244,13 @@ class PowerUp(Pion):
         else:
             self.type = TypePowerUp.grand
             self.couleur = "purple"
-            
-        #self.parent = parent
-        
-        #self.x2 = self.x1 + dim
-        #self.y2 = self.y1 + dim
-        #self.vitesseX = vitesseX
-        #self.vitesseY = vitesseY
-        
+        self.temps = time()
+        self.tempsMax = 5 #Le nombre de temps que le powerUp va etre affiche
         print("POWER UP   : x1", self.x1, "x2", self.x2, "y1", self.y1, "y2", self.y2)
     
+    def tempsFini(self):
+        if time() - self.temps > self.tempsMax:
+            self.parent.powersUP.remove(self)
             
 class Bordure():
     def __init__(self,x,y,largeur,hauteur):
