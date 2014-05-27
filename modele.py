@@ -34,7 +34,7 @@ class Modele():
     def ecrireHighscore(self):
         fichierHighscore = open("score.txt", 'w')
         for score in self.highscore:
-            fichierHighscore.write("%s,%.3f,%d,%s\n" %(score[0],score[1],score[2],score[3]))
+            fichierHighscore.write("%s,%.3f,%d,%r\n" %(score[0],score[1],score[2],score[3]))
         fichierHighscore.close()
     
     def ecrireOptions(self):
@@ -45,9 +45,17 @@ class Modele():
     def lireOptions(self):
         try:
             fichierOptions = open("options.txt", 'r')
+            tab = []
             for line in fichierOptions:
-                print(line)
+                tab.append(line)
+            
+            print(tab[0].split(':')[1])
+            self.limiteHighscore = tab[0].split(':')[1].strip()
+            print(tab[1].split(':')[1])
+            self.isPowerUp = tab[1].split(':')[1]
+            
         except:
+            print("Pas de fichier options")
             pass #Le fichier n'est pas cree
         
     def lireHighscore(self):
@@ -66,7 +74,7 @@ class Modele():
     
     def changerOptions(self,powerUps, nbSauvegarde):
         self.isPowerUp = powerUps
-        self.limiteHighscore = nbSauvegarde
+        self.limiteHighscore = int(nbSauvegarde)
         self.ecrireOptions()
     
 class Partie():
