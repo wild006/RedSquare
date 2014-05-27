@@ -1,3 +1,5 @@
+# Fait par Alexandre Laplante-Turpin et Francois Genest
+
 from tkinter import *
 import tkinter.messagebox as messagebox
 from modele import Niveau

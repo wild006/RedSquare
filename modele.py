@@ -1,3 +1,5 @@
+# Fait par Alexandre Laplante-Turpin et Francois Genest
+
 from time import time
 import math
 import random
@@ -14,7 +16,7 @@ class TypePowerUp():
 class Modele():
     def __init__(self, parent):
         self.parent = parent
-        self.grandeurJeuX = 460 #Selon la doc...
+        self.grandeurJeuX = 460
         self.grandeurJeuY = 460
         self.largeurBordure = 60
         self.highscore = []
@@ -24,7 +26,6 @@ class Modele():
         self.isPowerUp = True
         self.lireHighscore()
         self.lireOptions()
-        #A FAIRE: Mettre les options
         
     def commencerPartie(self, niveau):
         self.p = Partie(self, niveau, self.isPowerUp)
@@ -80,7 +81,6 @@ class Modele():
     
 class Partie():
     def __init__(self, parent, niveau, isPowerUp):
-        print("Partie")
         self.parent = parent
         self.c = Carre(self)
         self.pions = []
@@ -96,6 +96,7 @@ class Partie():
         self.nbSecIncrVit = 8
         self.probPowerUp = 0.02
         self.isPowerUp = isPowerUp
+        
         #Pour avoir toute la meme vitesse au depart
         if niveau == Niveau.facile:
             self.incrVit = 1
@@ -110,8 +111,6 @@ class Partie():
             vitesseDeBaseX = 14 
             vitesseDeBaseY = 18
         
-        print("niveau",self.niveau)
-        print("dernier niveau", self.parent.dernierNiveau)
         self.pions.append(Pion(self,100,100,60,60, vitesseDeBaseX, vitesseDeBaseY))
         self.pions.append(Pion(self,300,85,60,50, -vitesseDeBaseX, vitesseDeBaseY))
         self.pions.append(Pion(self,85,350,30,60, vitesseDeBaseX, -vitesseDeBaseY))
@@ -145,9 +144,7 @@ class Partie():
             if math.floor((time()-self.tempsDepart)/self.nbSecIncrVit) > self.nbChangementVitesse:
                 print("CHANGEMENT vitesse", math.floor((time()-self.tempsDepart)/self.nbSecIncrVit))
                 for pion in self.pions:
-                    print("vitesse avant" , pion.vitesseX, " ", pion.vitesseY)
                     pion.changementVitesse(self.incrVit)
-                    print("vitesse apres" , pion.vitesseX, " ", pion.vitesseY)
                 self.nbChangementVitesse = self.nbChangementVitesse + 1
                 print(self.nbChangementVitesse)
             self.parent.parent.v.root.after(50,self.jouer)
@@ -173,7 +170,6 @@ class Partie():
         
     def apparitionPowerUp(self):
         if random.random() < self.probPowerUp:
-            print("powerUP")
             self.powersUP.append(PowerUp(self,self.pions[0].vitesseX, self.pions[0].vitesseY, 40))
 
         
@@ -292,7 +288,6 @@ class PowerUp(Pion):
                 
         self.temps = time()
         self.tempsMax = 5 #Le nombre de temps que le powerUp va etre affiche
-        print("POWER UP   : x1", self.x1, "x2", self.x2, "y1", self.y1, "y2", self.y2)
     
     def tempsFini(self):
         if time() - self.temps > self.tempsMax:

@@ -1,3 +1,6 @@
+# Fait par Alexandre Laplante-Turpin et Francois Genest
+ 
+
 from modele import *
 from vue import *
 from time import time
