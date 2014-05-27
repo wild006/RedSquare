@@ -33,7 +33,7 @@ class Modele():
     def ecrireHighscore(self):
         fichierHighscore = open("score.txt", 'w')
         for i in self.highscore:
-            fichierHighscore.write((str(i[0]) + ","+ str(i[1])+ "\n"))
+            fichierHighscore.write("%s,%.3f,%d,%s\n" %(i[0],i[1],i[2],i[3]))
         fichierHighscore.close()
         
     def lireHighscore(self):
@@ -129,7 +129,7 @@ class Partie():
             
     def sauvegarderHighscore(self,nom): 
         print(self.tempsFin)       
-        score = [nom, self.tempsFin]
+        score = [nom, self.tempsFin, self.niveau, self.isPowerUp]
        
         self.parent.scoreSession.append(score)
         self.parent.highscore.append(score)
