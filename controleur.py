@@ -44,6 +44,9 @@ class Controleur():
         print("Mon score est ", nom)
         self.m.p.sauvegarderHighscore(nom)
 
+    def changerOptions(powerUps,nbSauvegarde):
+        pass
+
     def getScore(self):
         return self.m.highscore
         #return ["ana 1010","bob 3249","Alx 12394","Guy 1234354","Mat 3941","ROger 12341234"]

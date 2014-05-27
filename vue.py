@@ -9,7 +9,6 @@ class Vue():
         self.root = Tk()
         self.canevas = Canvas(self.root,width=self.parent.getGrandeurJeuX(),height=self.parent.getGrandeurJeuY(), bg = "white")
         self.canevas.pack()
-        print (self.canevas.cget("width"))
         self.cliquer = False
         self.premierClick = False
         self.bgImage= PhotoImage(file="Menu.gif")
@@ -19,6 +18,7 @@ class Vue():
         self.boutonCredits = Button(text= "Crédits",width =9, command = self.afficherCredits)
         self.boutonQuitter = Button(text= "Quitter",width =9, command = self.quitter)
         self.boutonRetour = Button(text= "Retour au Menu",width =14, command = self.menu)
+        self.boutonConfirmer = Button(text= "Confirmer",width =14, command = self.changerOptions)
         self.labelScore = Label(self.root,text="Pointage de la session", relief= "groove", width=20)
         self.labelHScore = Label(self.root,text="Meilleur pointage", relief= "groove",width=20)
         self.lbScore = Listbox(self.root,width=15,height=5)
@@ -94,7 +94,7 @@ class Vue():
         boutonSauveQuitter.pack()
         self.saveWindow.grab_set()
         self.root.wait_window(self.saveWindow)
-        self.parent.commencerPartie(1)
+
 
     def sauvegarderQuitter(self):
         self.sauvegarder()
@@ -104,6 +104,7 @@ class Vue():
         
     def sauvegarder(self):
         self.parent.sauvegarderHighscore(self.texte.get())
+        self.parent.commencerPartie(1)
         self.saveWindow.destroy()
 
     
@@ -115,12 +116,25 @@ class Vue():
 
     def afficherOptions(self):
         self.canevas.delete("menu")
-        self.cbModif = checkbox(self.root,text="Modificateur")
-        self.canevas.create_window(150,100,window= self.cbModif,anchor=E)
-        self.entreeNbPointage = Entry(text="Nombre de pointage sauvegardé")
+        self.cbVar = IntVar()
+        self.cbModif = Checkbutton(self.root,text="Modificateur")
+        self.canevas.create_window(150,100,window= self.cbModif)
 
-        self.canevas.create_window(230,400,window= self.boutonRetour,tags="options")
+        
+        
+        self.entreeNbPointage = Entry(text="Nombre de pointage sauvegardé",width=5)
+        self.canevas.create_window(140,150,window= self.entreeNbPointage, anchor=E)
 
+        self.labelNbPointage = Label(self.root, text="Nombre de pointage sauvegarder" )        
+        self.canevas.create_window(140,150,window= self.labelNbPointage, anchor=W)
+
+        self.canevas.create_window(100,400,window= self.boutonRetour,tags="options")
+
+        self.canevas.create_window(360,400,window= self.boutonConfirmer,tags="options")
+
+    def changerOptions(self):
+        self.parent.changerOptions(self.cbVar.get(),self.entreeNbPointage.get())
+    
     def afficherHighscores(self):
         self.canevas.delete("menu")
 
