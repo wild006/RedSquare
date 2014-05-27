@@ -16,7 +16,7 @@ class Vue():
         self.boutonScores = Button(text= "Scores",width =9, command = self.afficherHighscores)
         self.boutonCredits = Button(text= "Crédits",width =9, command = self.afficherCredits)
         self.boutonQuitter = Button(text= "Quitter",width =9, command = self.Quitter)
-        self.boutonRetour = Button(text= "Retour au Menu",width =12, command = self.Menu)
+        self.boutonRetour = Button(text= "Retour au Menu",width =14, command = self.Menu)
         self.Menu()
 
 
@@ -71,7 +71,9 @@ class Vue():
         messagebox.showinfo("Score", "Votre temps est  " + "%.3f" % round(temps,3) + " secondes !" )
         
     def saveWindows(self):
+        self.parent.commencerPartie()
         self.saveWindow = Toplevel(self.root)
+        self.saveWindow.transient(self.root)
         self.labelSauvegarde  = Label(self.saveWindow,text= "Veillez entrer vos informations pour sauvegarder votre score" )
         boutonSauvegarder = Button(self.saveWindow, text = "Sauvegarder et rejouer", command = self.sauvegarder, width =30)
         boutonSauveQuitter = Button(self.saveWindow, text = "Sauvegarder et revenir au menu", command = self.sauvegarderQuitter,width =30 )
@@ -80,6 +82,8 @@ class Vue():
         self.texte.pack()
         boutonSauvegarder.pack()
         boutonSauveQuitter.pack()
+        self.saveWindow.grab_set()
+        self.root.wait_window(self.saveWindow)
 
     def sauvegarderQuitter(self):
         self.sauvegarder()
@@ -90,7 +94,7 @@ class Vue():
     def sauvegarder(self):
         self.parent.sauvegarderHighscore(self.texte.get())
         self.saveWindow.destroy()
-        self.parent.commencerPartie()
+
     
     def commencerPartie(self):
         self.canevas.delete("menu")
@@ -111,13 +115,17 @@ class Vue():
         score = self.parent.getScoreSession()
         
         for i in range(score.__len__()):
-            self.lbHScore.insert(i, score[i])
+            self.lbHScore.insert(i, score[i][0] + "   " + score[i][1])
 
         for i in range(Hscore.__len__()):
-            self.lbScore.insert(i, Hscore[i])
+            self.lbScore.insert(i,Hscore[i][0] + "   " + Hscore[i][1])
 
-        self.canevas.create_window(100,100,window =self.lbScore)
-        self.canevas.create_window(360,100,window =self.lbHScore)
+        self.labelScore = Label(self.root,text="Score de la session", relief= "groove", width=16)
+        self.labelHScore = Label(self.root,text="MeilleurScore", relief= "groove",width=16)
+        self.canevas.create_window(120,150,window =self.labelScore,anchor=S)
+        self.canevas.create_window(340,150,window =self.labelHScore,anchor=S)
+        self.canevas.create_window(120,150,window =self.lbScore,anchor=N)
+        self.canevas.create_window(340,150,window =self.lbHScore, anchor=N)
         self.canevas.create_window(230,400,window= self.boutonRetour,tags="scores")
 
     def afficherCredits(self):
