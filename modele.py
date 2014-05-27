@@ -20,9 +20,10 @@ class Modele():
         self.highscore = []
         self.scoreSession = []
         self.limiteHighscore = 3
-        self.lireHighscore()
         self.dernierNiveau = Niveau.classique
         self.isPowerUp = True
+        self.lireHighscore()
+        self.lireOptions()
         #A FAIRE: Mettre les options
         
     def commencerPartie(self, niveau):
@@ -32,9 +33,22 @@ class Modele():
         
     def ecrireHighscore(self):
         fichierHighscore = open("score.txt", 'w')
-        for i in self.highscore:
-            fichierHighscore.write("%s,%.3f,%d,%s\n" %(i[0],i[1],i[2],i[3]))
+        for score in self.highscore:
+            fichierHighscore.write("%s,%.3f,%d,%s\n" %(score[0],score[1],score[2],score[3]))
         fichierHighscore.close()
+    
+    def ecrireOptions(self):
+        fichierOptions = open("options.txt", 'w')
+        fichierOptions.write("Limite highscore:%d\n" %(self.limiteHighscore))
+        fichierOptions.write("Modificateurs:%s" %(self.isPowerUp))
+        
+    def lireOptions(self):
+        try:
+            fichierOptions = open("options.txt", 'r')
+            for line in fichierOptions:
+                print(line)
+        except:
+            pass #Le fichier n'est pas cree
         
     def lireHighscore(self):
         try:
@@ -53,6 +67,7 @@ class Modele():
     def changerOptions(self,powerUps, nbSauvegarde):
         self.isPowerUp = powerUps
         self.limiteHighscore = nbSauvegarde
+        self.ecrireOptions()
     
 class Partie():
     def __init__(self, parent, niveau, isPowerUp):
