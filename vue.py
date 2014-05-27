@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter.messagebox as messagebox
+from modele import Niveau
 
 class Vue():
     def __init__(self,parent):
@@ -11,12 +12,15 @@ class Vue():
         self.cliquer = False
         self.premierClick = False
         self.bgImage= PhotoImage(file="Menu.gif")
-        self.boutonJouer = Button(text= "Jouer",width =9,command = self.commencerPartie)
+        self.boutonJouer = Button(text= "Jouer",width =9,command = self.jouerOptions)
         self.boutonOptions = Button(text= "Options",width =9,command = self.afficherOptions)
         self.boutonScores = Button(text= "Scores",width =9, command = self.afficherHighscores)
         self.boutonCredits = Button(text= "Crédits",width =9, command = self.afficherCredits)
-        self.boutonQuitter = Button(text= "Quitter",width =9, command = self.Quitter)
+        self.boutonQuitter = Button(text= "Quitter",width =9, command = self.quitter)
         self.boutonRetour = Button(text= "Retour au Menu",width =14, command = self.Menu)
+        self.lbScore = Listbox(self.root,width=15,height=5)
+        self.lbHScore =Listbox(self.root,width=15,height=5)
+
         self.Menu()
 
 
@@ -68,10 +72,10 @@ class Vue():
 
     def afficherTemps(self,temps):
         self.premierClick = False
-        messagebox.showinfo("Score", "Votre temps est  " + "%.3f" % round(temps,3) + " secondes !" )
+        messagebox.showinfo("Score", "Votre temps est  " + "%.3f" % (temps) + " secondes !" )
         
     def saveWindows(self):
-        self.parent.commencerPartie()
+        self.parent.commencerPartie(1)
         self.saveWindow = Toplevel(self.root)
         self.saveWindow.transient(self.root)
         self.labelSauvegarde  = Label(self.saveWindow,text= "Veillez entrer vos informations pour sauvegarder votre score" )
@@ -96,11 +100,11 @@ class Vue():
         self.saveWindow.destroy()
 
     
-    def commencerPartie(self):
-        self.canevas.delete("menu")
+    def commencerPartie(self,difficulte):
+        self.canevas.delete("jouerOptions")
         self.canevas.delete("bg")
         self.bindMouse()
-        self.parent.commencerPartie()
+        self.parent.commencerPartie(difficulte)
 
     def afficherOptions(self):
         self.canevas.delete("menu")
@@ -108,17 +112,16 @@ class Vue():
 
     def afficherHighscores(self):
         self.canevas.delete("menu")
-        self.lbScore = Listbox(self.root,width=15,height=5)
-        self.lbHScore =Listbox(self.root,width=15,height=5)
+
         
         Hscore = self.parent.getScore()
         score = self.parent.getScoreSession()
         
-        for i in range(score.__len__()):
-            self.lbHScore.insert(i, score[i][0] + "   " + score[i][1])
-
         for i in range(Hscore.__len__()):
-            self.lbScore.insert(i,Hscore[i][0] + "   " + Hscore[i][1])
+            self.lbHScore.insert(i, Hscore[i][0] + "   " + "%.3f" % round(Hscore[i][1],3))
+
+        for i in range(score.__len__()):
+            self.lbScore.insert(i,score[i][0] + "   " +  "%.3f" % round(score[i][1],3))
 
         self.labelScore = Label(self.root,text="Score de la session", relief= "groove", width=16)
         self.labelHScore = Label(self.root,text="MeilleurScore", relief= "groove",width=16)
@@ -135,8 +138,18 @@ class Vue():
         self.canevas.create_window(230,100,window=labelNomFrancois,tags="credits")
         self.canevas.create_window(230,125,window=labelNomAlex,tags="credits")
         self.canevas.create_window(230,400,window= self.boutonRetour,tags="credits")
+
+    def jouerOptions(self):
+        self.canevas.delete("menu")
+        self.boutonFacile = Button(text="Facile", command = lambda : self.commencerPartie(Niveau.facile),  width=10)
+        self.boutonClassique = Button(text="Classique", command = lambda : self.commencerPartie(Niveau.classique),  width=10)
+        self.boutonExpert = Button(text="Expert", command = lambda : self.commencerPartie(Niveau.expert), width=10)
+        self.canevas.create_window(230,150,window= self.boutonFacile, tags="jouerOptions")
+        self.canevas.create_window(230,200,window= self.boutonClassique, tags="jouerOptions")
+        self.canevas.create_window(230,250,window= self.boutonExpert, tags="jouerOptions")
+        self.canevas.create_window(230,400,window= self.boutonRetour,tags="JouerOptions")
         
-    def Quitter(self):
+    def quitter(self):
         exit(0)
         
     def Menu(self):
