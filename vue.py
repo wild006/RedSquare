@@ -13,7 +13,7 @@ class Vue():
         self.bgImage= PhotoImage(file="Menu.gif")
         self.boutonJouer = Button(text= "Jouer",width =9,command = self.commencerPartie)
         self.boutonOptions = Button(text= "Options",width =9,command = self.afficherOptions)
-        self.boutonHighscores = Button(text= "HighScore",width =9, command = self.afficherHighscores)
+        self.boutonScores = Button(text= "Scores",width =9, command = self.afficherHighscores)
         self.boutonCredits = Button(text= "Crédits",width =9, command = self.afficherCredits)
         self.boutonQuitter = Button(text= "Quitter",width =9, command = self.Quitter)
         self.boutonRetour = Button(text= "Retour au Menu",width =12, command = self.Menu)
@@ -104,7 +104,21 @@ class Vue():
 
     def afficherHighscores(self):
         self.canevas.delete("menu")
-        self.canevas.create_window(230,400,window= self.boutonRetour,tags="HS")
+        self.lbScore = Listbox(self.root,width=15,height=5)
+        self.lbHScore =Listbox(self.root,width=15,height=5)
+        
+        Hscore = self.parent.getScore()
+        score = self.parent.getScoreSession()
+        
+        for i in range(score.__len__()):
+            self.lbHScore.insert(i, score[i])
+
+        for i in range(Hscore.__len__()):
+            self.lbScore.insert(i, Hscore[i])
+
+        self.canevas.create_window(100,100,window =self.lbScore)
+        self.canevas.create_window(360,100,window =self.lbHScore)
+        self.canevas.create_window(230,400,window= self.boutonRetour,tags="scores")
 
     def afficherCredits(self):
         self.canevas.delete("menu")
@@ -121,7 +135,7 @@ class Vue():
         self.canevas.delete("all")
         self.canevas.create_image(0,0,image=self.bgImage,anchor=NW ,tags="bg" )
         self.canevas.create_window(230,125,window = self.boutonJouer,tags="menu")
-        self.canevas.create_window(230,175,window = self.boutonHighscores,tags="menu")
+        self.canevas.create_window(230,175,window = self.boutonScores,tags="menu")
         self.canevas.create_window(230,225,window = self.boutonOptions,tags="menu")
         self.canevas.create_window(230,275,window = self.boutonCredits,tags="menu")
         self.canevas.create_window(230,325,window = self.boutonQuitter,tags="menu")

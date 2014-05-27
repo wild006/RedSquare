@@ -8,7 +8,7 @@ class Modele():
         self.grandeurJeuY = 460
         self.largeurBordure = 60
         self.highscore = []
-        self.scoresSession = []
+        self.scoreSession = []
         self.limiteHighscore = 3
         self.lireHighscore()
         #A FAIRE: Mettre les options
@@ -94,7 +94,7 @@ class Partie():
         
         score = [nom, self.tempsFin]
        
-        self.parent.scoresSession.append(score)
+        self.parent.scoreSession.append(score)
         self.parent.highscore.append(score)
         
         self.parent.highscore.sort(key=lambda highscore: highscore[1], reverse=True)
@@ -102,7 +102,7 @@ class Partie():
         if len(self.parent.highscore) > self.parent.limiteHighscore:
             self.parent.highscore = self.parent.highscore[0:self.parent.limiteHighscore] #On enleve le score en trop
             
-        for i in self.parent.scoresSession:
+        for i in self.parent.scoreSession:
             print(i)
         for i in self.parent.highscore:
             print(i)

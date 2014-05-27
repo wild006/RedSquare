@@ -40,7 +40,13 @@ class Controleur():
     
     def sauvegarderHighscore(self, score):
         self.m.p.sauvegarderHighscore(score)
-        
-           
+
+    def getScore(self):
+        #return self.m.highscore
+        return ["ana 1010","bob 3249","Alx 12394","Guy 1234354","Mat 3941","ROger 12341234"]
+
+    def getScoreSession(self):
+        #return self.m.scoreSession
+        return ["ana 1010","bob 3249","Alx 12394","Guy 1234354","Mat 3941","ROger 12341234"]
 if __name__ == '__main__':
     c = Controleur()
