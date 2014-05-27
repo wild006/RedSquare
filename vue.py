@@ -12,9 +12,10 @@ class Vue():
         self.canevas.pack()
         self.cliquer = False
         self.premierClick = False
-        self.cbVar = IntVar()
+        self.cbVar = BooleanVar()
         self.cbModif = Checkbutton(self.root,text="Modificateur",variable=self.cbVar)
-
+        self.cbVar.set(self.parent.getPowerUp())
+        
         self.bgImage= PhotoImage(file="Menu.gif")
         self.labelNbPointage = Label(self.root, text="Nombre de pointage sauvegarder" )        
 
@@ -35,6 +36,13 @@ class Vue():
         self.entreeNbPointage.insert(0,3)
 
         self.menu()
+
+        self.entreeNbPointage.delete(0,END)
+        self.entreeNbPointage.insert(0,self.parent.getNbSauvegarde())
+        
+
+        
+
 
 
     def afficherEtatJeu(self,carre,pions,bordures,powerUps):
@@ -103,6 +111,7 @@ class Vue():
         boutonSauvegarder.pack()
         boutonSauveQuitter.pack()
         self.saveWindow.grab_set()
+        self.parent.commencerPartie(1)
         self.root.wait_window(self.saveWindow)
 
 
@@ -114,7 +123,6 @@ class Vue():
         
     def sauvegarder(self):
         self.parent.sauvegarderHighscore(self.texte.get())
-        self.parent.commencerPartie(1)
         self.saveWindow.destroy()
 
     

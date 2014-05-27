@@ -45,7 +45,13 @@ class Controleur():
         self.m.p.sauvegarderHighscore(nom)
 
     def changerOptions(self,powerUps,nbSauvegarde):
-        pass
+        self.m.changerOptions(powerUps, nbSauvegarde)
+
+    def getPowerUp(self):
+        return self.m.isPowerUp
+
+    def getNbSauvegarde(self):
+        return self.m.limiteHighscore
 
     def getScore(self):
         return self.m.highscore

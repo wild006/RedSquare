@@ -34,7 +34,8 @@ class Modele():
     def ecrireHighscore(self):
         fichierHighscore = open("score.txt", 'w')
         for score in self.highscore:
-            fichierHighscore.write("%s,%.3f,%d,%r\n" %(score[0],score[1],score[2],score[3]))
+            print(score)
+            fichierHighscore.write("%s,%.3f,%d,%r" %(score[0],score[1],int(score[2]),score[3]))
         fichierHighscore.close()
     
     def ecrireOptions(self):
@@ -50,7 +51,8 @@ class Modele():
                 tab.append(line)
             
             print(tab[0].split(':')[1])
-            self.limiteHighscore = tab[0].split(':')[1].strip()
+            s = tab[0].split(':')[1]
+            self.limiteHighscore = int(s[0:len(s)-1])
             print(tab[1].split(':')[1])
             self.isPowerUp = tab[1].split(':')[1]
             
