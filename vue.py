@@ -138,7 +138,7 @@ class Vue():
             self.parent.changerOptions(self.cbVar.get(),int(self.entreeNbPointage.get()))
             self.labelOptionInvalide.config(text="Les options ont été sauvegardées",fg="green")
         except:
-            self.labelOptionInvalide.config(text="Une donné est invalide")
+            self.labelOptionInvalide.config(text="Une donné est invalide", fg = "red")
             
     def afficherHighscores(self):
         self.canevas.delete("menu")
@@ -158,7 +158,7 @@ class Vue():
             elif hscore[i][2]== 2:
                 difficulte = "Expert"
 
-            if hscore[i][3] == "True":
+            if hscore[i][3]:
                 Modif = "Modif"
             else:
                 Modif = "Sans Modif"
@@ -209,6 +209,7 @@ class Vue():
         
     def menu(self):
         self.canevas.delete("all")
+        self.labelOptionInvalide.config(text="")
         self.canevas.create_image(0,0,image=self.bgImage,anchor=NW ,tags="bg" )
         self.canevas.create_window(230,125,window = self.boutonJouer,tags="menu")
         self.canevas.create_window(230,175,window = self.boutonScores,tags="menu")
