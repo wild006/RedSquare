@@ -1,6 +1,7 @@
 from modele import *
 from vue import *
 from time import time
+from modele import Niveau
 
 class Controleur():
     def __init__(self):
@@ -19,7 +20,7 @@ class Controleur():
         self.m.p.c.changementPos(deltaX,deltaY)
     
     def commencerPartie(self):
-        self.m.commencerPartie()
+        self.m.commencerPartie(Niveau.expert)
     
     def jouer(self):
         self.m.p.tempsDepart = time()

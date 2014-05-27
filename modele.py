@@ -1,6 +1,11 @@
 from time import time
 import math
 
+class Niveau():
+    facile = 0
+    classique = 1
+    expert = 2
+
 class Modele():
     def __init__(self, parent):
         self.parent = parent
@@ -13,8 +18,8 @@ class Modele():
         self.lireHighscore()
         #A FAIRE: Mettre les options
     
-    def commencerPartie(self):
-        self.p = Partie(self)
+    def commencerPartie(self, niveau):
+        self.p = Partie(self, niveau)
         self.parent.afficherEtatJeu(self.p.c,self.p.pions,self.p.bordures)#Afficher le jeu des le depart
         #Initialiser le carre
         
@@ -39,12 +44,13 @@ class Modele():
             pass #Le fichier n'est pas cree
     
 class Partie():
-    def __init__(self, parent):
+    def __init__(self, parent, niveau):
         print("Partie")
         self.parent = parent
         self.c = Carre(self)
         self.pions = []
         self.bordures = []
+        self.niveau = niveau
         self.finPartie = False
         self.tempsDepart = 0
         self.tempsFin = 0
@@ -52,8 +58,20 @@ class Partie():
         self.incrVit = 2
         self.nbSecIncrVit = 8
         
-        vitesseDeBaseX = 9 #Pour avoir toute la meme vitesse au depart
-        vitesseDeBaseY = 12
+        #Pour avoir toute la meme vitesse au depart
+        if niveau == Niveau.facile:
+            self.incrVit = 1
+            vitesseDeBaseX = 8 
+            vitesseDeBaseY = 10
+        elif niveau == Niveau.classique:
+            self.incrVit = 2
+            vitesseDeBaseX = 9 
+            vitesseDeBaseY = 12
+        elif niveau == Niveau.expert:
+            self.incrVit = 2
+            vitesseDeBaseX = 14 
+            vitesseDeBaseY = 18
+        
         
         self.pions.append(Pion(self,100,100,60,60, vitesseDeBaseX, vitesseDeBaseY))
         self.pions.append(Pion(self,300,85,60,50, -vitesseDeBaseX, vitesseDeBaseY))
@@ -88,10 +106,7 @@ class Partie():
                 print(self.nbChangementVitesse)
             self.parent.parent.v.root.after(50,self.jouer)
             
-    def sauvegarderHighscore(self,nom):
-        print(self.tempsFin)
-        #BUG ! LE TEMPS EST TOUJOURS 0 DEVRAIT SE REGLER AVEC LE MENU...
-        
+    def sauvegarderHighscore(self,nom):        
         score = [nom, self.tempsFin]
        
         self.parent.scoreSession.append(score)
