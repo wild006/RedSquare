@@ -70,7 +70,7 @@ class Partie():
         self.nbChangementVitesse = 0
         self.incrVit = 2
         self.nbSecIncrVit = 8
-        self.probPowerUp = 0.015
+        self.probPowerUp = 0.02
         self.isPowerUp = isPowerUp
         #Pour avoir toute la meme vitesse au depart
         if niveau == Niveau.facile:
@@ -165,12 +165,12 @@ class Carre():
         self.y = self.y + y
 
     def collisionObstacle(self,obstacle):        
-        tue = self.collision(obstacle)
+        tue = self.collisionListe(obstacle)
         if tue != None:
             self.parent.finPartie = True
     
     def collisionPowerUp(self, powersUp):
-        powerUp = self.collision(powersUp)
+        powerUp = self.collisionListe(powersUp)
         if powerUp != None:
             if powerUp.type == TypePowerUp.petit:
                 self.dim = self.dim * 0.8
@@ -178,17 +178,23 @@ class Carre():
                 self.dim = self.dim * 1.2
             self.parent.powersUP.remove(powerUp)
             
-    def collision(self, element):
+    def collisionListe(self, element):
         for i in element:
-            if self.x > i.x1 and self.x <i.x2 and self.y > i.y1 and self.y < i.y2:
+            if self.collision(i.x1, i.x2, i.y1, i.y2):
                 return i
-            elif self.x +self.dim > i.x1 and self.x + self.dim <i.x2 and self.y > i.y1 and self.y < i.y2:
-                return i
-            elif self.x > i.x1 and self.x <i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
-                return i
-            elif self.x  + self.dim> i.x1 and self.x  + self.dim<i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
-                return i
+            
         return None
+    
+    def collision(self, x1, x2, y1, y2):
+        if self.x > x1 and self.x < x2 and self.y > y1 and self.y < y2:
+            return True
+        elif self.x +self.dim > x1 and self.x + self.dim < x2 and self.y > y1 and self.y < y2:
+            return True
+        elif self.x > x1 and self.x < x2 and self.y + self.dim > y1 and self.y + self.dim < y2:
+            return True
+        elif self.x  + self.dim> x1 and self.x  + self.dim< x2 and self.y + self.dim > y1 and self.y + self.dim < y2:
+            return True
+        return False
         
     def collisions(self):
         if self.x < 0 or self.x > self.parent.parent.grandeurJeuX:
@@ -240,17 +246,25 @@ class PowerUp(Pion):
     def __init__(self, parent, vitesseX, vitesseY, dim):
         x = random.randint(0,parent.parent.grandeurJeuX - dim)
         y = random.randint(0,parent.parent.grandeurJeuY - dim)
+        while parent.c.collision(x,y,x+dim, y+dim):
+            x = random.randint(0,parent.parent.grandeurJeuX - dim)
+            y = random.randint(0,parent.parent.grandeurJeuY - dim)
+            
         Pion.__init__(self, parent, x, y, dim, dim, vitesseX, vitesseY)
         
         if random.random() <= 0.5:
             self.type = TypePowerUp.petit
-            if random.random() <= 0.5:
+            if random.random() <= 0.6:
                 self.couleur = "yellow"
             else:
                 self.couleur = "black"
         else:
             self.type = TypePowerUp.grand
-            self.couleur = "purple"
+            if random.random() <= 0.6:
+                self.couleur = "purple"
+            else:
+                self.couleur = "black"
+                
         self.temps = time()
         self.tempsMax = 5 #Le nombre de temps que le powerUp va etre affiche
         print("POWER UP   : x1", self.x1, "x2", self.x2, "y1", self.y1, "y2", self.y2)
