@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter.messagebox as messagebox
 from modele import Niveau
+import re
 
 class Vue():
     def __init__(self,parent):
@@ -11,7 +12,13 @@ class Vue():
         self.canevas.pack()
         self.cliquer = False
         self.premierClick = False
+        self.cbVar = IntVar()
+        self.cbModif = Checkbutton(self.root,text="Modificateur",variable=self.cbVar)
+
         self.bgImage= PhotoImage(file="Menu.gif")
+        self.labelNbPointage = Label(self.root, text="Nombre de pointage sauvegarder" )        
+
+        self.labelOptionInvalide = Label(self.root,text="",fg="red")
         self.boutonJouer = Button(text= "Jouer",width =9,command = self.jouerOptions)
         self.boutonOptions = Button(text= "Options",width =9,command = self.afficherOptions)
         self.boutonScores = Button(text= "Pointages",width =9, command = self.afficherHighscores)
@@ -21,8 +28,11 @@ class Vue():
         self.boutonConfirmer = Button(text= "Confirmer",width =14, command = self.changerOptions)
         self.labelScore = Label(self.root,text="Pointage de la session", relief= "groove", width=20)
         self.labelHScore = Label(self.root,text="Meilleur pointage", relief= "groove",width=20)
+        self.entreeNbPointage = Entry(width=5)
         self.lbScore = Listbox(self.root,width=15,height=5)
         self.lbHscore =Listbox(self.root,width=15,height=5)
+        self.entreeNbPointage.delete(0,END)
+        self.entreeNbPointage.insert(0,3)
 
         self.menu()
 
@@ -116,25 +126,22 @@ class Vue():
 
     def afficherOptions(self):
         self.canevas.delete("menu")
-        self.cbVar = IntVar()
-        self.cbModif = Checkbutton(self.root,text="Modificateur")
-        self.canevas.create_window(150,100,window= self.cbModif)
-
-        
-        
-        self.entreeNbPointage = Entry(text="Nombre de pointage sauvegardé",width=5)
-        self.canevas.create_window(140,150,window= self.entreeNbPointage, anchor=E)
-
-        self.labelNbPointage = Label(self.root, text="Nombre de pointage sauvegarder" )        
-        self.canevas.create_window(140,150,window= self.labelNbPointage, anchor=W)
-
+        self.canevas.create_window(230,75,window=self.labelOptionInvalide ,tags="options")
+        self.canevas.create_window(150,100,window= self.cbModif, tags="options")
+        self.canevas.create_window(140,150,window= self.entreeNbPointage, anchor=E, tags="options")
+        self.canevas.create_window(140,150,window= self.labelNbPointage, anchor=W, tags="options")
         self.canevas.create_window(100,400,window= self.boutonRetour,tags="options")
-
         self.canevas.create_window(360,400,window= self.boutonConfirmer,tags="options")
 
     def changerOptions(self):
-        self.parent.changerOptions(self.cbVar.get(),self.entreeNbPointage.get())
-    
+        try:
+            int(self.entreeNbPointage.get())
+            self.labelOptionInvalide.config(text="")
+            self.parent.changerOptions(self.cbVar.get(),self.entreeNbPointage.get())
+            self.labelOptionInvalide.config(text="Les options ont été sauvegardées",fg="green")
+        except:
+            self.labelOptionInvalide.config(text="Une donné est invalide")
+            
     def afficherHighscores(self):
         self.canevas.delete("menu")
 
