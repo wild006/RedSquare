@@ -111,8 +111,8 @@ class Vue():
         boutonSauvegarder.pack()
         boutonSauveQuitter.pack()
         self.saveWindow.grab_set()
-        self.parent.commencerPartie(1)
         self.root.wait_window(self.saveWindow)
+        self.parent.commencerPartie(self.parent.getDernierNiveau())
 
 
     def sauvegarderQuitter(self):

@@ -35,7 +35,7 @@ class Modele():
         fichierHighscore = open("score.txt", 'w')
         for score in self.highscore:
             print(score)
-            fichierHighscore.write("%s,%.3f,%d,%r" %(score[0],score[1],int(score[2]),score[3]))
+            fichierHighscore.write("%s,%.3f,%d,%r\n" %(score[0],score[1],int(score[2]),score[3]))
         fichierHighscore.close()
     
     def ecrireOptions(self):
@@ -57,8 +57,7 @@ class Modele():
             self.isPowerUp = tab[1].split(':')[1]
             
         except:
-            print("Pas de fichier options")
-            pass #Le fichier n'est pas cree
+            print("Pas de fichier options") #Le fichier n'est pas cree
         
     def lireHighscore(self):
         try:
@@ -72,7 +71,7 @@ class Modele():
                 
             fichierHighscore.close()
         except:
-            pass #Le fichier n'est pas cree
+            print("Pas de fichier de score") #Le fichier n'est pas cree
     
     def changerOptions(self,powerUps, nbSauvegarde):
         self.isPowerUp = powerUps
@@ -111,7 +110,8 @@ class Partie():
             vitesseDeBaseX = 14 
             vitesseDeBaseY = 18
         
-        
+        print("niveau",self.niveau)
+        print("dernier niveau", self.parent.dernierNiveau)
         self.pions.append(Pion(self,100,100,60,60, vitesseDeBaseX, vitesseDeBaseY))
         self.pions.append(Pion(self,300,85,60,50, -vitesseDeBaseX, vitesseDeBaseY))
         self.pions.append(Pion(self,85,350,30,60, vitesseDeBaseX, -vitesseDeBaseY))
