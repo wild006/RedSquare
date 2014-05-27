@@ -15,19 +15,22 @@ class Vue():
         self.bgImage= PhotoImage(file="Menu.gif")
         self.boutonJouer = Button(text= "Jouer",width =9,command = self.jouerOptions)
         self.boutonOptions = Button(text= "Options",width =9,command = self.afficherOptions)
-        self.boutonScores = Button(text= "Scores",width =9, command = self.afficherHighscores)
+        self.boutonScores = Button(text= "Pointages",width =9, command = self.afficherHighscores)
         self.boutonCredits = Button(text= "Crédits",width =9, command = self.afficherCredits)
         self.boutonQuitter = Button(text= "Quitter",width =9, command = self.quitter)
         self.boutonRetour = Button(text= "Retour au Menu",width =14, command = self.menu)
+        self.labelScore = Label(self.root,text="Pointage de la session", relief= "groove", width=20)
+        self.labelHScore = Label(self.root,text="Meilleur pointage", relief= "groove",width=20)
         self.lbScore = Listbox(self.root,width=15,height=5)
         self.lbHscore =Listbox(self.root,width=15,height=5)
 
         self.menu()
 
 
-    def afficherEtatJeu(self,carre,pions,bordures):
+    def afficherEtatJeu(self,carre,pions,bordures,powerUps):
         self.canevas.delete("carre")
         self.canevas.delete("pions")
+        self.canevas.delete("power")
         self.canevas.delete("bordures")
         self.carre = self.canevas.create_rectangle(carre.x,carre.y,carre.x+ carre.dim,carre.y + carre.dim,
                                       fill=carre.couleur,tags ="carre")
@@ -37,6 +40,9 @@ class Vue():
         for i in pions:
             self.canevas.create_rectangle(i.x1,i.y1,i.x2,i.y2 ,
                                       fill=i.couleur,tags ="pions")
+        for i in powerUps:
+            self.canevas.create_oval(i.x1,i.y1,i.x2,i.y2 ,
+                                      fill=i.couleur,tags ="power")
 
 
     def bindMouse(self):
@@ -73,7 +79,7 @@ class Vue():
 
     def afficherTemps(self,temps):
         self.premierClick = False
-        messagebox.showinfo("Score", "Votre temps est  " + "%.3f" % (temps) + " secondes !" )
+        messagebox.showinfo("Partie Terminée", "Votre temps est  " + "%.3f" % (temps) + " secondes !" )
         
     def saveWindows(self):
         self.saveWindow = Toplevel(self.root)
@@ -88,7 +94,6 @@ class Vue():
         boutonSauveQuitter.pack()
         self.saveWindow.grab_set()
         self.root.wait_window(self.saveWindow)
-        print(3)
         self.parent.commencerPartie(1)
 
     def sauvegarderQuitter(self):
@@ -110,14 +115,16 @@ class Vue():
 
     def afficherOptions(self):
         self.canevas.delete("menu")
-        self.entreeSizeX =Entry(self.root)
+        self.cbModif = checkbox(self.root,text="Modificateur")
+        self.canevas.create_window(150,100,window= self.cbModif,anchor=E)
+        self.entreeNbPointage = Entry(text="Nombre de pointage sauvegardé")
+
         self.canevas.create_window(230,400,window= self.boutonRetour,tags="options")
 
     def afficherHighscores(self):
         self.canevas.delete("menu")
 
-        self.labelScore = Label(self.root,text="Score de la session", relief= "groove", width=16)
-        self.labelHScore = Label(self.root,text="MeilleurScore", relief= "groove",width=16)
+
         hscore = self.parent.getScore()
         score = self.parent.getScoreSession()
         
