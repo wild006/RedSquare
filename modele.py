@@ -1,10 +1,15 @@
 from time import time
 import math
+import random
 
 class Niveau():
     facile = 0
     classique = 1
     expert = 2
+
+class TypePowerUp():
+    petit = 0
+    grand = 1
 
 class Modele():
     def __init__(self, parent):
@@ -16,11 +21,12 @@ class Modele():
         self.scoreSession = []
         self.limiteHighscore = 3
         self.lireHighscore()
+        self.dernierNiveau = Niveau.classique
         #A FAIRE: Mettre les options
     
     def commencerPartie(self, niveau):
         self.p = Partie(self, niveau)
-        self.parent.afficherEtatJeu(self.p.c,self.p.pions,self.p.bordures)#Afficher le jeu des le depart
+        self.parent.afficherEtatJeu(self.p.c,self.p.pions,self.p.bordures, self.p.powersUP)#Afficher le jeu des le depart
         #Initialiser le carre
         
     def ecrireHighscore(self):
@@ -50,13 +56,17 @@ class Partie():
         self.c = Carre(self)
         self.pions = []
         self.bordures = []
+        self.powersUP = []
         self.niveau = niveau
+        self.parent.dernierNiveau = niveau
         self.finPartie = False
         self.tempsDepart = 0
         self.tempsFin = 0
         self.nbChangementVitesse = 0
         self.incrVit = 2
         self.nbSecIncrVit = 8
+        self.probPowerUp = 0.08
+        self.isPowerUp = True
         
         #Pour avoir toute la meme vitesse au depart
         if niveau == Niveau.facile:
@@ -85,9 +95,15 @@ class Partie():
     def jouer(self):
         for pion in self.pions:
             pion.changementPos()
-        
+            
+        #PowerUp
+        if self.isPowerUp:
+            for powerUp in self.powersUP:
+                powerUp.changementPos()
+            self.apparitionPowerUp()
+            
         self.c.collisions()
-        self.parent.parent.afficherEtatJeu(self.c,self.pions,self.bordures)
+        self.parent.parent.afficherEtatJeu(self.c,self.pions,self.bordures, self.powersUP)
         if self.finPartie == True:
             print("mort")
             self.tempsFin = time()-self.tempsDepart
@@ -106,7 +122,8 @@ class Partie():
                 print(self.nbChangementVitesse)
             self.parent.parent.v.root.after(50,self.jouer)
             
-    def sauvegarderHighscore(self,nom):        
+    def sauvegarderHighscore(self,nom): 
+        print(self.tempsFin)       
         score = [nom, self.tempsFin]
        
         self.parent.scoreSession.append(score)
@@ -123,6 +140,11 @@ class Partie():
             print(i)
         
         self.parent.ecrireHighscore()
+        
+    def apparitionPowerUp(self):
+        if random.random() < self.probPowerUp:
+            print("powerUP")
+            self.powersUP.append(PowerUp(self,self.pions[0].vitesseX, self.pions[0].vitesseY, 40))
 
         
 class Carre():
@@ -148,6 +170,11 @@ class Carre():
             elif self.x  + self.dim> i.x1 and self.x  + self.dim<i.x2 and self.y + self.dim > i.y1 and self.y + self.dim < i.y2:
                 self.parent.finPartie = True
     
+   # def collisionPowerUp(self, powerUp):
+        
+   # def collision(self, element):
+        
+        
     def collisions(self):
         if self.x < 0 or self.x > self.parent.parent.grandeurJeuX:
             self.parent.finPartie = True
@@ -190,7 +217,30 @@ class Pion():
         if self.vitesseY < 0:
             self.vitesseY = self.vitesseY - incrVit
         else:
-            self.vitesseY = self.vitesseY + incrVit        
+            self.vitesseY = self.vitesseY + incrVit
+            
+class PowerUp(Pion):
+    def __init__(self, parent, vitesseX, vitesseY, dim):
+        x = random.randint(0,parent.parent.grandeurJeuX - dim)
+        y = random.randint(0,parent.parent.grandeurJeuY - dim)
+        Pion.__init__(self, parent, x, y, dim, dim, vitesseX, vitesseY)
+        
+        if random.random() <= 0.5:
+            self.type = TypePowerUp.petit
+            self.couleur = "yellow"
+        else:
+            self.type = TypePowerUp.grand
+            self.couleur = "purple"
+            
+        #self.parent = parent
+        
+        #self.x2 = self.x1 + dim
+        #self.y2 = self.y1 + dim
+        #self.vitesseX = vitesseX
+        #self.vitesseY = vitesseY
+        
+        print("POWER UP   : x1", self.x1, "x2", self.x2, "y1", self.y1, "y2", self.y2)
+    
             
 class Bordure():
     def __init__(self,x,y,largeur,hauteur):
