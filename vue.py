@@ -29,8 +29,8 @@ class Vue():
         self.labelScore = Label(self.root,text="Pointage de la session", relief= "groove", width=20)
         self.labelHScore = Label(self.root,text="Meilleur pointage", relief= "groove",width=20)
         self.entreeNbPointage = Entry(width=5)
-        self.lbScore = Listbox(self.root,width=15,height=5)
-        self.lbHscore =Listbox(self.root,width=15,height=5)
+        self.lbScore = Listbox(self.root,width=25,height=5)
+        self.lbHscore =Listbox(self.root,width=25,height=5)
         self.entreeNbPointage.delete(0,END)
         self.entreeNbPointage.insert(0,3)
 
@@ -135,9 +135,7 @@ class Vue():
 
     def changerOptions(self):
         try:
-            int(self.entreeNbPointage.get())
-            self.labelOptionInvalide.config(text="")
-            self.parent.changerOptions(self.cbVar.get(),self.entreeNbPointage.get())
+            self.parent.changerOptions(self.cbVar.get(),int(self.entreeNbPointage.get()))
             self.labelOptionInvalide.config(text="Les options ont été sauvegardées",fg="green")
         except:
             self.labelOptionInvalide.config(text="Une donné est invalide")
@@ -145,15 +143,41 @@ class Vue():
     def afficherHighscores(self):
         self.canevas.delete("menu")
 
-
+        self.lbScore.delete(0,END)
+        self.lbHscore.delete(0,END)
         hscore = self.parent.getScore()
         score = self.parent.getScoreSession()
         
+        difficulte = "facile"
+        Modif = "Modif"
         for i in range(hscore.__len__()):
-            self.lbHscore.insert(i, hscore[i][0] + "   " + "%.3f" % round(hscore[i][1],3))
+            if hscore[i][2]== 0:
+                difficulte = "Facile"
+            elif hscore[i][2]== 1:
+                difficulte = "Classique"
+            elif hscore[i][2]== 2:
+                difficulte = "Expert"
+
+            if hscore[i][3] == "True":
+                Modif = "Modif"
+            else:
+                Modif = "Sans Modif"
+                
+            self.lbHscore.insert(i, hscore[i][0] + "   " + "%.3f" % round(hscore[i][1],3)+ " | " +difficulte +" " + Modif)
 
         for i in range(score.__len__()):
-            self.lbScore.insert(i,score[i][0] + "   " +  "%.3f" % round(score[i][1],3))
+            if score[i][2]== 0:
+                difficulte = "Facile"
+            elif score[i][2]== 1:
+                difficulte = "Classique"
+            elif score[i][2]== 2:
+                difficulte = "Expert"
+
+            if score[i][3]:
+                Modif = "Modif"
+            else:
+                Modif = "Sans Modif"
+            self.lbScore.insert(i,score[i][0] + "   " +  "%.3f" % round(score[i][1],3)+ " | " +difficulte +" " + Modif)
             
 
         self.canevas.create_window(120,150,window =self.labelScore,anchor=S)
