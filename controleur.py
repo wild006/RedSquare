@@ -44,8 +44,8 @@ class Controleur():
         print("Mon score est ", nom)
         self.m.p.sauvegarderHighscore(nom)
 
-    def changerOptions(powerUps,nbSauvegarde):
-        pass
+    def changerOptions(self,powerUps,nbSauvegarde):
+        self.m.changerOptions(powerUps, nbSauvegarde)
 
     def getScore(self):
         return self.m.highscore

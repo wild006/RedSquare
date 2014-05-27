@@ -50,6 +50,10 @@ class Modele():
         except:
             pass #Le fichier n'est pas cree
     
+    def changerOptions(self,powerUps, nbSauvegarde):
+        self.isPowerUp = powerUps
+        self.limiteHighscore = nbSauvegarde
+    
 class Partie():
     def __init__(self, parent, niveau, isPowerUp):
         print("Partie")
@@ -240,7 +244,10 @@ class PowerUp(Pion):
         
         if random.random() <= 0.5:
             self.type = TypePowerUp.petit
-            self.couleur = "yellow"
+            if random.random() <= 0.5:
+                self.couleur = "yellow"
+            else:
+                self.couleur = "black"
         else:
             self.type = TypePowerUp.grand
             self.couleur = "purple"
