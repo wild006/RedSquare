@@ -16,7 +16,9 @@ class Vue():
         self.premierClick = False
         self.cbVar = BooleanVar()
         self.cbModif = Checkbutton(self.root,text="Modificateur",variable=self.cbVar)
-        self.cbVar.set(self.parent.getPowerUp())
+        if self.parent.getPowerUp() == True:
+            self.cbModif.select()
+            print(self.parent.getPowerUp())
         
         self.bgImage= PhotoImage(file="Menu.gif")
         self.labelNbPointage = Label(self.root, text="Nombre de pointage sauvegarder" )        

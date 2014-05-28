@@ -42,7 +42,7 @@ class Modele():
     def ecrireOptions(self):
         fichierOptions = open("options.txt", 'w')
         fichierOptions.write("Limite highscore:%d\n" %(self.limiteHighscore))
-        fichierOptions.write("Modificateurs:%s" %(self.isPowerUp))
+        fichierOptions.write("Modificateurs:%r" %(self.isPowerUp))
         
     def lireOptions(self):
         try:
@@ -54,8 +54,13 @@ class Modele():
             print(tab[0].split(':')[1])
             s = tab[0].split(':')[1]
             self.limiteHighscore = int(s[0:len(s)-1])
-            print(tab[1].split(':')[1])
+            print("tab",tab[1].split(':')[1])
             self.isPowerUp = tab[1].split(':')[1]
+            if self.isPowerUp == "True":
+                self.isPowerUp = True
+            elif self.isPowerUp == "False":
+                self.isPowerUp = False
+            print("pp",self.isPowerUp)
             
         except:
             print("Pas de fichier options") #Le fichier n'est pas cree
